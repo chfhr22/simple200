@@ -1,0 +1,58 @@
+.detail__wrap {
+    width: 600px;
+    margin: 20px auto;
+    padding: 12px 16px;
+    border-radius: 8px;
+    border: 1px solid rgb(243, 240, 255);
+    background-color: rgb(247, 246, 255);
+
+    .detail__title {
+        padding-bottom: 10px;
+        margin-bottom: 10px;
+        border-bottom: 1px solid rgb(225, 231, 245);
+        
+        h3 {
+            color: rgb(100, 70 , 255);
+            margin-bottom: 10px;
+        }
+
+        .detail__author {
+            color: #b6b6b6;
+            position: relative;
+            padding-left: 30px;
+
+            &::before {
+                content: '';
+                width: 20px;
+                height: 20px;
+                background-color: rgb(100, 70, 255);
+                position: absolute;
+                left: 0;
+                top: 0;
+                border-radius: 50%;
+            }
+        }
+    }
+
+    .detail__content {
+        min-height: 500px;
+        color: rgb(80, 85, 103);
+        word-break: keep-all;
+    }
+
+    .detail__btn {
+        text-align: right;
+        
+        button,
+        a {
+            background-color: rgb(100, 70 , 255);
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 20px;
+            margin-left: 10px;
+            display: inline;
+            box-sizing: border-box;
+            font-size: 1rem;
+        }
+    }
+}

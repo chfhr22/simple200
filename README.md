@@ -3,6 +3,17 @@
 npm install -g yarn  
 yarn create react-app .
 
+## git 화살표 폴더
+
+위 폴더중 최상위 디렉토리에 이미 .git이라는 파일이 생성되었는데, 해당 디렉토리에서도 push를 진행하는 과정에 .git 파일이 생겨서 발생하는 오류로
+
+```
+rm -rf .git
+git rm --cached . -rf
+```
+
+해당 폴더에 들어가서 명령어를 입력하면 git폴더와 캐쉬가 지워져서 정상적으로 돌아온다.
+
 ## client
 
 npx create-react-app .  
@@ -13,6 +24,7 @@ npm install http-proxy-middleware
 npm install @emotion/css
 npm install @emotion/react
 npm install @emotion/styled
+npm install sass
 npm install firebase
 npm install react-redux
 npm install @reduxjs/toolkit
@@ -27,6 +39,8 @@ npm install mongoose --save;
 npm install multer --save;  
 npm install aws-sdk@2.348.0 --save
 npm install multer-s3 --save;
+
+<!-- multer-s3는 2.10.0 버전을 설치해야 함 -->
 
 ## 제작과정
 
@@ -833,26 +847,101 @@ app.use("/img", express.static("./img"));
 />
 ```
 
+## 회원가입
+
 ## 로그인관련 firebase연동
 
+client에 firebase 파일 만든 후 firebase에서 소스 가져오기
+
+< Join.jsx>
+
 ```js
-// firebase.js
-import firebase from "firebase/compat/app";
-import "firebase/compat/auth";
+import React, { useState } from "react";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyAtaca8d8rOrLcUO4lVEH4jzP2iY32dUcw",
-  authDomain: "simple-blog-8365f.firebaseapp.com",
-  projectId: "simple-blog-8365f",
-  storageBucket: "simple-blog-8365f.appspot.com",
-  messagingSenderId: "554544841722",
-  appId: "1:554544841722:web:6b0c6671d425866c6e1a43",
-  measurementId: "G-MZ62ZKG9XL",
+import firebase from "../../firebase.js";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+
+const Join = () => {
+  const [youName, setYouName] = useState("");
+  const [youEmail, setYouEmail] = useState("");
+  const [youPass, setYouPass] = useState("");
+  const [youPassC, setYouPassC] = useState("");
+
+  let navigate = useNavigate();
+
+  const JoinFunc = async (e) => {
+    e.preventDefault();
+    if (!(youName && youEmail && youPass && youPassC)) {
+      return alert("모든 항목을 채워주세요");
+    }
+    if (youPass !== youPassC) {
+      return alert("비밀번호가 일치하지 않습니다.");
+    }
+
+    // 개인정보 -> firebase로 주기
+    let createdUser = await firebase
+      .auth()
+      .createUserWithEmailAndPassword(youEmail, youPass);
+
+    await createdUser.user.updateProfile({
+      displayName: youName,
+    });
+
+    console.log(createdUser.user);
+
+    // 개인정보 -> mongoDB로 주기
+
+    let body = {
+      email: createdUser.user.multiFactor.user.email,
+      displayName: createdUser.user.multiFactor.user.displayName,
+      uid: createdUser.user.multiFactor.user.uid
+    }
+    axios.post("/api/user/join", body)
+    .then((response) => {
+      if(response.data.success){
+        alert("회원가입 성공")
+        navigate("/login")
+      } else {
+        return alert("회원가입 실패")
+      }
+  });
 };
+```
 
-firebase.initializeApp(firebaseConfig);
+```js
+// router/user.js
+// mongDb로 회원정보 넣기
+const express = require("express");
+const router = express.Router();
 
-export default firebase;
+// 스키마 만들기
+const { User } = require("../Model/User.js");
+const { Counter } = require("../Model/Counter.js");
+
+router.post("/join", (req, res) => {
+  let temp = req.body;
+
+  Counter.findOne({ name: "counter" })
+    .then((result) => {
+      temp.userNum = result.userNum;
+
+      const userData = new User(req.body);
+      userData.save().then(() => {
+        Counter.updateOne({ name: "counter" }, { $inc: { userNum: 1 } }).then(
+          () => {
+            res.status(200).json({ success: true });
+          }
+        );
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(400).json({ success: false });
+    });
+});
+
+module.exports = router;
 ```
 
 ## count

@@ -1,0 +1,53 @@
+:root {
+    --mainfont-nanum: "nanumSquareNeo";
+    --mainfont-nexon: "nexonLv2";
+
+    --black: #000;
+    --black100: #111;
+    --black200: #222;
+    --black300: #333;
+    --black400: #444;
+    --black500: #555;
+    --black600: #666;
+    --black700: #777;
+    --black800: #888;
+    --black900: #999;
+
+    --white: #fff;
+    --white100: #eee;
+    --white200: #ddd;
+    --white300: #ccc;
+    --white400: #bbb;
+    --white500: #aaa;
+
+
+    --lavanda: #E6E6FA;
+    --lavanda100: #CEC7E0;
+    --lavanda200: #B8A8C4;
+    --lavanda300: #A48AA8;
+    --lavanda400: #916D8A;
+
+    --subColor: #f6faf8;
+    --subColor100: #CEDBD9;
+    --subColor200: #A7BCBE;
+    --subColor300: #829DA6;
+    --subColor400: #637F90;
+
+    // 폰트 셋팅
+    font-family: var(--mainfont-nanum), var(--mainfont-nexon);
+    font-size: 16px;
+    line-height: 1.5;
+    font-weight: 400;
+
+    // 폰트 최적화
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-text-size-adjust: 100%;
+
+    @media (max-width: 800px) {
+        font-size: 14px;
+        line-height: 1.4;
+    }
+}

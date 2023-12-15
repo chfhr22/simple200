@@ -1,0 +1,57 @@
+#login__wrap {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+
+    .login__form {
+        margin-top: 40px;
+        display: flex;
+        flex-direction: column;
+        width: 400px;
+
+
+        fieldset {
+            border: 0;
+        }
+
+        input {
+            padding: 15px 40px;
+            border: 1px solid var(--black900);
+            display: block;
+            margin: 15px 0;
+            width: 100%;
+        }
+        button {
+            width: 100%;
+            padding: 20px 40px;
+            display: block;
+            background-color: var(--black);
+            color: var(--white)
+        }
+        .login__pass {
+
+            textarea {
+                width: 100%;
+                height: 300px;
+                border: 1px solid var(--black900);
+                resize: none;
+                padding: 15px 20px;
+                margin-bottom: 10px;
+            }
+        }
+    }
+}
+.login__bg {
+    width: 100%;
+    height: 300px;
+    background-color: var(--black);
+
+    .login__bg__text {
+        color: var(--white);
+        text-transform: uppercase;
+        font-size: 2rem;
+        font-weight: 300;
+        text-align: center;
+        line-height: 300px;
+    }
+}
